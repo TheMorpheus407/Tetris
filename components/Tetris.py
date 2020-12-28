@@ -1,4 +1,5 @@
 from components.Figure import Figure
+from constants.GameStates import START, GAME_OVER
 
 
 class Tetris:
@@ -6,7 +7,7 @@ class Tetris:
     width = 0
     field = []
     score = 0
-    state = "start"
+    state = START
     Figure = None
 
     def __init__(self, _height, _width):
@@ -14,7 +15,7 @@ class Tetris:
         self.width = _width
         self.field = []
         self.score = 0
-        self.state = "start"
+        self.state = START
         for i in range(_height):
             new_line = []
             for j in range(_width):
@@ -36,10 +37,12 @@ class Tetris:
         edge = False
         for i in range(4):
             for j in range(4):
-                p = i*4+j
+                p = i * 4 + j
                 if p in self.Figure.image():
-                    if j + self.Figure.x + dx > self.width -1 or \
-                        j + self.Figure.x + dx < 0:
+                    if (
+                        j + self.Figure.x + dx > self.width - 1
+                        or j + self.Figure.x + dx < 0
+                    ):
                         edge = True
         if not edge:
             self.Figure.x += dx
@@ -70,9 +73,11 @@ class Tetris:
             for j in range(4):
                 p = i * 4 + j
                 if p in self.Figure.image():
-                    if i + self.Figure.y > self.height - 1 or \
-                        i + self.Figure.y < 0 or \
-                        self.field[i + self.Figure.y][j + self.Figure.x] > 0:
+                    if (
+                        i + self.Figure.y > self.height - 1
+                        or i + self.Figure.y < 0
+                        or self.field[i + self.Figure.y][j + self.Figure.x] > 0
+                    ):
                         intersection = True
         return intersection
 
@@ -81,11 +86,13 @@ class Tetris:
             for j in range(4):
                 p = i * 4 + j
                 if p in self.Figure.image():
-                    self.field[i + self.Figure.y][j + self.Figure.x] = self.Figure.type+1
+                    self.field[i + self.Figure.y][j + self.Figure.x] = (
+                        self.Figure.type + 1
+                    )
         self.break_lines()
         self.new_figure()
         if self.intersects():
-            self.state == "gameover"
+            self.state == GAME_OVER
 
     def break_lines(self):
         lines = 0

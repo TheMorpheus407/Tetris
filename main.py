@@ -1,7 +1,8 @@
 import pygame
 
 from components.Tetris import Tetris
-from components.Colors import brick_colors, primary_colors
+from constants.Colors import brick_colors, primary_colors
+from constants.GameStates import START, GAME_OVER
 
 
 pygame.init()
@@ -21,7 +22,7 @@ pressing_left = False
 pressing_right = False
 
 while not done:
-    if game.state == "start":
+    if game.state == START:
         game.go_down()
 
     for event in pygame.event.get():
@@ -87,7 +88,7 @@ while not done:
     gameover_font = pygame.font.SysFont("Calibri", 65, True, False)
     text_gameover = gameover_font.render("Game Over!\n Press Esc", True, (255, 215, 0))
 
-    if game.state == "gameover":
+    if game.state == GAME_OVER:
         screen.blit(text_gameover, [30, 250])
 
     score_font = pygame.font.SysFont("Calibri", 25, True, False)
