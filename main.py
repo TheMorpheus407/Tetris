@@ -28,7 +28,7 @@ while not done:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             done = True
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.KEYDOWN and not game.state == GAME_OVER:
             if event.key == pygame.K_UP:
                 game.rotate()
             if event.key == pygame.K_DOWN:
