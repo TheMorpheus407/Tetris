@@ -1,8 +1,11 @@
 import pygame
 
 from components.Tetris import Tetris
+from components.Colors import brick_colors, primary_colors
+
 
 pygame.init()
+
 screen = pygame.display.set_mode((380, 670))
 pygame.display.set_caption("Tetrieus")
 
@@ -16,10 +19,6 @@ game = Tetris(20, 10)
 pressing_down = False
 pressing_left = False
 pressing_right = False
-
-BLACK = (0, 0, 0)
-WHITE = (255, 255, 255)
-GRAY = (128, 128, 128)
 
 while not done:
     if game.state == "start":
@@ -53,17 +52,20 @@ while not done:
         if pressing_right:
             game.right()
 
-    screen.fill(color=WHITE)
+    screen.fill(color=primary_colors["WHITE"])
     for i in range(game.height):
         for j in range(game.width):
             if game.field[i][j] == 0:
-                color = GRAY
+                color = primary_colors["GRAY"]
                 just_border = 1
             else:
-                color = colors[game.field[i][j]]
+                color = brick_colors[game.field[i][j]]
                 just_border = 0
             pygame.draw.rect(
-                screen, color, [30 + j * zoom, 30 + i * zoom, zoom, zoom], just_border
+                screen,
+                color,
+                [30 + j * zoom, 30 + i * zoom, zoom, zoom],
+                just_border,
             )
 
     if game.Figure is not None:
