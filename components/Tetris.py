@@ -24,7 +24,11 @@ class Tetris:
         self.new_figure()
 
     def new_figure(self):
-        self.Figure = Figure(3, 0)
+        next_figure = Figure(3, 0)
+        if self.intersects(next_figure):
+            self.state = GAME_OVER
+            return
+        self.Figure = next_figure
 
     def go_down(self):
         self.Figure.y += 1
@@ -40,8 +44,8 @@ class Tetris:
                 p = i * 4 + j
                 if p in self.Figure.image():
                     if (
-                        j + self.Figure.x + dx > self.width - 1
-                        or j + self.Figure.x + dx < 0
+                        j + self.Figure.x + dx > self.width - 1  # beyond right border
+                        or j + self.Figure.x + dx < 0  # beyond left border
                     ):
                         edge = True
         if not edge:
@@ -67,16 +71,17 @@ class Tetris:
         if self.intersects():
             self.Figure.rotation = old_rotation
 
-    def intersects(self):
+    def intersects(self, fig=None):
+        fig = self.Figure if (fig is None) else fig
         intersection = False
         for i in range(4):
             for j in range(4):
                 p = i * 4 + j
-                if p in self.Figure.image():
+                if p in fig.image():
                     if (
-                        i + self.Figure.y > self.height - 1
-                        or i + self.Figure.y < 0
-                        or self.field[i + self.Figure.y][j + self.Figure.x] > 0
+                        i + fig.y > self.height - 1  # bottom intersection
+                        # or i + fig.y < 0  #
+                        or self.field[i + fig.y][j + fig.x] > 0  # figure intersection
                     ):
                         intersection = True
         return intersection
@@ -91,8 +96,6 @@ class Tetris:
                     )
         self.break_lines()
         self.new_figure()
-        if self.intersects():
-            self.state == GAME_OVER
 
     def break_lines(self):
         lines = 0
